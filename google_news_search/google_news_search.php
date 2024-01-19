@@ -7,3 +7,9 @@
  * Text Domain: google_news_search
  * 
 */
+
+//Protects the php file from being access by the URL
+if( !defined('ABSPATH') )
+{
+    exit;
+}
