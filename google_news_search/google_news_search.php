@@ -47,7 +47,7 @@ class GoogleNewsSearch
 
             <form method="GET" action="">
                 <label for="query">Enter query here:</label>
-                <input type="text" name="query">
+                <input type="text" name="query" autofocus>
                 <button type="submit">Search</button>
             </form>
 
@@ -59,7 +59,7 @@ class GoogleNewsSearch
                 $feed = fetch_feed($api);
 
                 if (!is_wp_error($feed)) {
-                    echo "<h3>Search Results:</h3>";
+                    echo "<h3>Search Results for '" . urldecode($search_term) . "':</h3>";
 
                     $items = $feed->get_items();
                     $num_results = min(count($items), 5);

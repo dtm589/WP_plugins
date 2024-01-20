@@ -1,3 +1,34 @@
 body {
-    background-color: red;
+    font-family: 'Roboto', sans-serif;
+}
+
+div {
+   margin: auto;
+   width: 80%; 
+}
+
+input {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 12px;
+}
+
+button {
+    background-color: cornflowerblue;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    margin: 2px 4px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: blue;
+}
+
+li {
+    margin: 7px;
 }
