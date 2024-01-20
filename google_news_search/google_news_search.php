@@ -19,7 +19,7 @@ class GoogleNewsSearch
     public function __construct()
     {
 
-        add_action('wp_enqueue_style', array($this, 'load_assets'));
+        add_action('wp_enqueue_scripts', array($this, 'load_assets'));
 
         add_shortcode('google_search_form', array($this, 'load_shortcode'));
 
@@ -31,9 +31,9 @@ class GoogleNewsSearch
     {
         wp_enqueue_style(
             'google_news_search',
-            plugins_url(__FILE__) . 'styles/styles.css',
+            plugins_url('styles/styles.css', __FILE__),
             array(),
-            1,
+            '1.0',
             'all'
         );
     }
