@@ -53,7 +53,7 @@ class GoogleNewsSearch
 
             <form method="GET" action="">
                 <label for="query">Enter query here:</label>
-                <input type="text" name="query" autofocus>
+                <input type="text" name="query" autofocus autocomplete="off">
                 <button type="submit">Search</button>
             </form>
 
