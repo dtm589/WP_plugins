@@ -19,7 +19,7 @@ class GoogleNewsSearch
     public function __construct()
     {
 
-        add_action('wp_enqueue_scripts', array($this, 'load_assets'));
+        add_action('wp_enqueue_style', array($this, 'load_assets'));
 
         add_shortcode('google_search_form', array($this, 'load_shortcode'));
 
@@ -61,11 +61,17 @@ class GoogleNewsSearch
                 if (!is_wp_error($feed)) {
                     echo "<h3>Search Results:</h3>";
 
-                    foreach ($feed->get_items() as $item) {
+                    $items = $feed->get_items();
+                    $num_results = min(count($items), 5);
+
+                    echo "<ul>";
+                    for ($i = 0; $i < $num_results; $i++) {
+                        $item = $items[$i];
                         $title = esc_html($item->get_title());
                         $link = esc_url($item->get_permalink());
-                        echo "<p><a href='{$link}' target='_blank'>{$title}</a></p>";
+                        echo "<li><a href='{$link}' target='_blank'>{$title}</a></li>";
                     }
+                    echo "</ul>";
                 } else {
                     echo "<p>Error retrieving data from the API:</p>";
                     echo "<pre>";
