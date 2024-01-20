@@ -6,45 +6,32 @@
  * Version: 1.0.0
  * Text Domain: google_news_search
  * 
-*/
+ */
 
 //Protects the php file from being access by the URL
-if( !defined('ABSPATH') )
-{
+if (!defined('ABSPATH')) {
     exit;
 }
 
-class GoogleNewsSearch {
+class GoogleNewsSearch
+{
 
     public function __construct()
     {
-        add_action('init', array( $this,'create_custom_post_type') );
 
-        add_action('wp_enqueue_scripts', array( $this,'load_assets') );
+        add_action('wp_enqueue_scripts', array($this, 'load_assets'));
 
-        add_shortcode('google_search_form', array( $this,'load_shortcode') );
+        add_shortcode('google_search_form', array($this, 'load_shortcode'));
 
-        
+
     }
 
-    public function create_custom_post_type()
-    {
-        $args = array(
-
-            'public'=> true,
-            'has_archive' => false,
-            'supports' => array('title'),
-            'publicly_queryable' => false
-        );
-
-        register_post_type('google_news_search', $args );
-    }
 
     public function load_assets()
     {
         wp_enqueue_style(
             'google_news_search',
-            plugins_url( __FILE__ ) . 'styles/styles.css',
+            plugins_url(__FILE__) . 'styles/styles.css',
             array(),
             1,
             'all'
@@ -53,7 +40,44 @@ class GoogleNewsSearch {
 
     public function load_shortcode()
     {
-        return 'Hello its working!';
+        ob_start()
+            ?>
+        <div>
+            <h2>Google News Search</h2>
+
+            <form method="GET" action="">
+                <label for="query">Enter query here:</label>
+                <input type="text" name="query">
+                <button type="submit">Search</button>
+            </form>
+
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["query"])) {
+                $search_term = urlencode($_GET["query"]);
+                $api = "https://news.google.com/news?q={$search_term}&output=rss";
+
+                $feed = fetch_feed($api);
+
+                if (!is_wp_error($feed)) {
+                    echo "<h3>Search Results:</h3>";
+
+                    foreach ($feed->get_items() as $item) {
+                        $title = esc_html($item->get_title());
+                        $link = esc_url($item->get_permalink());
+                        echo "<p><a href='{$link}' target='_blank'>{$title}</a></p>";
+                    }
+                } else {
+                    echo "<p>Error retrieving data from the API:</p>";
+                    echo "<pre>";
+                    print_r($feed->get_error_message());
+                    echo "</pre>";
+                }
+            }
+            ?>
+
+        </div>
+        <?php
+        return ob_get_clean();
     }
 
 }
